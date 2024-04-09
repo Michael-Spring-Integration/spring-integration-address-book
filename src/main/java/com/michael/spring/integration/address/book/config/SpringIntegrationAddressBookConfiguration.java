@@ -8,20 +8,14 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.http.HttpHeaders;
 import org.springframework.integration.http.inbound.HttpRequestHandlingMessagingGateway;
 import org.springframework.integration.http.inbound.RequestMapping;
-import org.springframework.integration.mapping.InboundMessageMapper;
-import org.springframework.integration.mapping.OutboundMessageMapper;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,41 +24,7 @@ import java.util.Map;
 @Configuration
 @EnableIntegration
 @Slf4j
-public class SpringIntegrationConfiguration {
-
-   /*  @Bean
-    public MessageChannel addContactHttpRequestChannel() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel addContactHttpResponseChannel() {
-        return new DirectChannel();
-    }
-   @Bean
-    public IntegrationFlow integrationFlow() {
-        return IntegrationFlow.from(httpRequestChannel())
-                .channel(httpResponseChannel())
-                .get();
-    }*/
-
-   /* @Bean
-    public HttpRequestHandlingMessagingGateway addContactHttpGateway() {
-        HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
-        gateway.setRequestMapping(mappingForAddContact());
-        //gateway.setRequestPayloadType(String.class);
-        gateway.setRequestChannel(addContactHttpRequestChannel());
-        gateway.setReplyChannel(addContactHttpResponseChannel());
-        gateway.setReplyTimeout(5000);
-        return gateway;
-    }*/
-
-  /*  @Bean
-    public RequestMapping mappingForAddContact() {
-        RequestMapping requestMapping = new RequestMapping();
-        requestMapping.setPathPatterns("/contacts/add");
-        requestMapping.setMethods(HttpMethod.POST);
-        return requestMapping;
-    }*/
+public class SpringIntegrationAddressBookConfiguration {
 
     @Bean
     public MessageChannel httpRequestChannel() {
@@ -76,13 +36,18 @@ public class SpringIntegrationConfiguration {
     }
 
     @Bean
+    public MessageChannel httpErrorChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
     public HttpRequestHandlingMessagingGateway httpGatewayForGetOrDeleteContact() {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
         gateway.setRequestMapping(createRequestMappingForGetOrDeleteContact());
         gateway.setRequestChannel(httpRequestChannel());
         gateway.setReplyChannel(httpReplyChannel());
+        gateway.setErrorChannel(httpErrorChannel());
         gateway.setPayloadExpression(createPayloadExpressionForGetOrDeleteContact());
-       // gateway.setRequestMapper(createRequestMapperForGetContact());
         return gateway;
     }
     private RequestMapping createRequestMappingForGetOrDeleteContact() {
@@ -95,27 +60,6 @@ public class SpringIntegrationConfiguration {
         ExpressionParser parser = new SpelExpressionParser();
         return parser.parseExpression("#pathVariables.contactId");
     }
-
-/*    private InboundMessageMapper<?> createRequestMapperForGetContact(){
-        return new InboundMessageMapper<Object>() {
-            @Override
-            public Message<?> toMessage(Object object, Map<String, Object> headers) {
-                log.info("The logging the headers in createReplyMapperForGetContact()");
-                Message message = null;
-                headers.forEach((k,v) -> log.info("{} {} " , k,v));
-                if (headers.containsKey(HttpHeaders.STATUS_CODE)) {
-                    int statusCode = (int) headers.get("customStatusCode");
-                    log.info("The custom HTTP response status code to be sent to client : {}" , statusCode);
-                    message = MessageBuilder.withPayload(object).build();
-                    message = MessageBuilder.fromMessage(message)
-                            .setHeader(HttpHeaders.STATUS_CODE, statusCode)
-                            .build();
-                }
-                return message;
-            }
-        };
-    }*/
-
     @Bean
     public HttpRequestHandlingMessagingGateway httpGatewayForSearchContactsByName() {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
@@ -152,9 +96,10 @@ public class SpringIntegrationConfiguration {
         gateway.setRequestMapping(createRequestMappingForAddOrUpdateOrSearchAllContacts());
         gateway.setRequestChannel(httpRequestChannel());
         gateway.setReplyChannel(httpReplyChannel());
-        //gateway.setReplyMapper(createReplyMapperForAddContacts());
+        gateway.setErrorChannel(httpErrorChannel());
         return gateway;
     }
+
     private RequestMapping createRequestMappingForAddOrUpdateOrSearchAllContacts() {
         RequestMapping requestMapping = new RequestMapping();
         requestMapping.setMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT); // Add more methods as needed

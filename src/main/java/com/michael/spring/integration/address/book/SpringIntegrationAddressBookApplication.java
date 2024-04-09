@@ -1,6 +1,6 @@
 package com.michael.spring.integration.address.book;
 
-import com.michael.spring.integration.address.book.config.SpringIntegrationConfiguration;
+import com.michael.spring.integration.address.book.config.SpringIntegrationAddressBookConfiguration;
 import com.michael.spring.integration.address.book.model.response.ResponseDTO;
 import com.michael.spring.integration.address.book.model.request.ContactDTO;
 import com.michael.spring.integration.address.book.service.ContactService;
@@ -16,7 +16,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import java.util.List;
 
 @SpringBootApplication
-@Import(SpringIntegrationConfiguration.class)
+@Import(SpringIntegrationAddressBookConfiguration.class)
 @Slf4j
 public class SpringIntegrationAddressBookApplication {
 
@@ -140,8 +140,7 @@ public class SpringIntegrationAddressBookApplication {
 
 			// Get contact by ID
 			Message<Long> message = MessageBuilder.withPayload(1L).build();
-			Message<ContactDTO> messageFetched = contactService.getContactById(message);
-			ContactDTO contactDTOFetched = messageFetched.getPayload();
+			ContactDTO contactDTOFetched = contactService.getContactById(message);
 			log.info("Contact found with findById(1L):");
 			log.info("--------------------------------");
 			log.info(contactDTOFetched.toString());
@@ -154,8 +153,7 @@ public class SpringIntegrationAddressBookApplication {
 			nameUpdate.setFullName("Michael Philomin Raj");
 			nameUpdate.setEmailAddress("michaelraj.p@gmail.com");
 			nameUpdate.setPhoneNumber("+919094523573");
-			Message<ContactDTO> messageForContactUpdated = contactService.updateContact(nameUpdate);
-			ContactDTO contactUpdated = messageForContactUpdated.getPayload();
+			ContactDTO contactUpdated = contactService.updateContact(nameUpdate);
 			log.info("Contact updated by Contact Id:");
 			log.info("--------------------------------");
 			log.info(contactUpdated.toString());
@@ -171,13 +169,13 @@ public class SpringIntegrationAddressBookApplication {
 
 			// Delete a contact
 			Message<Long> messageForDelete = MessageBuilder.withPayload(4L).build();
-			Message<ResponseDTO> messageForResult = contactService.deleteContact(messageForDelete);
+			ResponseDTO resultOfDeleteOperation = contactService.deleteContact(messageForDelete);
 			log.info("Contact deleted where ID = 2L");
-			log.info("The result of Delete operation is {} " , messageForResult);
+			log.info("The result of Delete operation is {} " , resultOfDeleteOperation);
 
 			log.info("--------------------------------------------");
 
-			// Get all contacts
+			// Get all the contacts
 			log.info("findAll() again, expect 3 contacts");
 			log.info("-----------------------------------");
 			log.info("The loaded contact details");
