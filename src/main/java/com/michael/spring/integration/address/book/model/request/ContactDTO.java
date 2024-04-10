@@ -4,11 +4,7 @@ import lombok.*;
 import java.time.Instant;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class ContactDTO {
     private Long contactId;
     private String fullName;

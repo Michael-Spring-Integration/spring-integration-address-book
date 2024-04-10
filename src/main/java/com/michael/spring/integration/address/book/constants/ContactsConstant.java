@@ -5,13 +5,25 @@ public class ContactsConstant {
     private ContactsConstant(){
 
     }
+
+    public static final String CONTACT_ALREADY_EXISTING_FOR_GIVEN_ID = "The given contact is already existing for the given Contact ID : ";
+
+    public static final String CONTACT_ALREADY_EXISTING_FOR_GIVEN_NAME = "The given contact is already existing for the given name : ";
+
     public static final String CONTACT_NOT_FOUND = "The contact is not found for the given Contact ID : ";
+
+    public static final String CONTACT_NOT_FOUND_FOR_THE_GIVEN_NAME = "The contact is not found for the given name : ";
 
     public static final String CONTACT_ID_CANT_BE_NULL_BLANK = "ContactId can't be null or blank";
 
     public static final String CONTACT_ID_IS_INVALID = "ContactId is invalid";
 
     public static final String CONTACT_ID = "contactId";
+
+    public static final String FULL_NAME = "fullName";
+
+
+    public static final String RESOURCE_POST = "POST";
 
     public static final String RESOURCE_PUT = "PUT";
 

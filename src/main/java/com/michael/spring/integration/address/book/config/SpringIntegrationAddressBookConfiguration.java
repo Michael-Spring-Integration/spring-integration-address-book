@@ -4,6 +4,7 @@ package com.michael.spring.integration.address.book.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -23,6 +24,9 @@ import java.util.Map;
 
 @Configuration
 @EnableIntegration
+@Import({GetOrDeleteContactConfiguration.class,
+        SearchContactByNameConfiguration.class,
+        AddOrUpdateOrSearchAllContactsConfiguration.class})
 @Slf4j
 public class SpringIntegrationAddressBookConfiguration {
 
@@ -40,74 +44,7 @@ public class SpringIntegrationAddressBookConfiguration {
         return new DirectChannel();
     }
 
-    @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForGetOrDeleteContact() {
-        HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
-        gateway.setRequestMapping(createRequestMappingForGetOrDeleteContact());
-        gateway.setRequestChannel(httpRequestChannel());
-        gateway.setReplyChannel(httpReplyChannel());
-        gateway.setErrorChannel(httpErrorChannel());
-        gateway.setPayloadExpression(createPayloadExpressionForGetOrDeleteContact());
-        return gateway;
-    }
-    private RequestMapping createRequestMappingForGetOrDeleteContact() {
-        RequestMapping requestMapping = new RequestMapping();
-        requestMapping.setMethods(HttpMethod.GET, HttpMethod.DELETE); // Add more methods as needed
-        requestMapping.setPathPatterns("/contacts/get/{contactId}", "/contacts/delete/{contactId}"); // Add more paths as needed
-        return requestMapping;
-    }
-    private Expression createPayloadExpressionForGetOrDeleteContact(){
-        ExpressionParser parser = new SpelExpressionParser();
-        return parser.parseExpression("#pathVariables.contactId");
-    }
-    @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForSearchContactsByName() {
-        HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
-        gateway.setRequestMapping(createRequestMappingForSearchContactsByName());
-        gateway.setRequestChannel(httpRequestChannel());
-        gateway.setReplyChannel(httpReplyChannel());
-        gateway.setPayloadExpression(createPayloadExpressionForSearchContactsByName());
-        gateway.setHeaderExpressions(createHeaderExpressionForSearchContactsByName());
-        return gateway;
-    }
-    private RequestMapping createRequestMappingForSearchContactsByName() {
-        RequestMapping requestMapping = new RequestMapping();
-        requestMapping.setMethods(HttpMethod.GET); // Add more methods as needed
-        requestMapping.setPathPatterns("contacts/searchByName/{contactName}"); // Add more paths as needed
-        return requestMapping;
-    }
-
-    private Expression createPayloadExpressionForSearchContactsByName(){
-        ExpressionParser parser = new SpelExpressionParser();
-        return parser.parseExpression("#pathVariables.contactName");
-    }
-    private Map<String,Expression> createHeaderExpressionForSearchContactsByName(){
-        Map<String,Expression> headerExpression = new HashMap<>();
-        ExpressionParser parser = new SpelExpressionParser();
-        Expression operationNameInCustomHeader = parser.parseExpression("#requestHeaders['x-user-operation']");
-        Expression operationNameInRequestParameter = parser.parseExpression("#requestParams.operationName");
-        headerExpression.put("operationNameInCustomHeader",operationNameInCustomHeader);
-        headerExpression.put("operationNameInRequestParameter",operationNameInRequestParameter);
-        return headerExpression;
-    }
-    @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForAddOrUpdateOrSearchAllContacts() {
-        HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
-        gateway.setRequestMapping(createRequestMappingForAddOrUpdateOrSearchAllContacts());
-        gateway.setRequestChannel(httpRequestChannel());
-        gateway.setReplyChannel(httpReplyChannel());
-        gateway.setErrorChannel(httpErrorChannel());
-        return gateway;
-    }
-
-    private RequestMapping createRequestMappingForAddOrUpdateOrSearchAllContacts() {
-        RequestMapping requestMapping = new RequestMapping();
-        requestMapping.setMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT); // Add more methods as needed
-        requestMapping.setPathPatterns("/contacts/add", "/contacts/update","contacts/search","contacts/search-by-name/*"); // Add more paths as needed
-        return requestMapping;
-    }
-
-    @Bean
+       @Bean
     public IntegrationFlow integrationFlow() {
         return IntegrationFlow.from("httpRequestChannel")
                 .route(Message.class, requestMessage -> {
@@ -142,36 +79,6 @@ public class SpringIntegrationAddressBookConfiguration {
                 })
                 .get();
     }
-
-    @Bean
-    public MessageChannel getContactChannel() {
-        return new DirectChannel();
-    }
-
-    @Bean
-    public MessageChannel searchContactsByNameChannel() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel searchAllContactsChannel() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel deleteContactChannel() {
-        return new DirectChannel();
-    }
-
-    @Bean
-    public MessageChannel addContactChannel() {
-        return new DirectChannel();
-    }
-
-    @Bean
-    public MessageChannel updateContactChannel() {
-        return new DirectChannel();
-    }
-
-
 }
 
 

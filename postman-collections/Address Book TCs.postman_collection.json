@@ -1,0 +1,483 @@
+{
+	"info": {
+		"_postman_id": "8fd355cd-a326-441f-b35e-58fc42b8a45b",
+		"name": "Address Book TCs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Contact",
+			"item": [
+				{
+					"name": "Positive Scenarios",
+					"item": [
+						{
+							"name": "Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"+919094523574\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Scenarios",
+					"item": [
+						{
+							"name": "Add Duplicate Contact - Using Contact Id",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\r\n        \"contactId\": 2,\r\n        \"fullName\": \"Jenifer Christina\",\r\n        \"emailAddress\": \"jenichri.19.p@gmail.com\",\r\n        \"phoneNumber\": \"+919894067712\",\r\n        \"createdOn\": 1712747440.333101000,\r\n        \"lastUpdatedOn\": 1712747440.333101000\r\n   }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Duplicate Contact - Using Contact Full Name",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\r\n        \"fullName\": \"Michael Philomin Raj\",\r\n        \"emailAddress\": \"michaelraj.p@gmail.com\",\r\n        \"phoneNumber\": \"+919094523573\",\r\n        \"createdOn\": 1712747440.288748000,\r\n        \"lastUpdatedOn\": 1712747440.434307000\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Get Contact",
+			"item": [
+				{
+					"name": "Positive Scenarios",
+					"item": [
+						{
+							"name": "Load or Get Contact By ContactId",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Operation",
+										"value": "Get Contact Using Contact Id",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/get/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"get",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Scenarios",
+					"item": [
+						{
+							"name": "Contact Not Found - Load or Get Contact By ContactId",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Operation",
+										"value": "Get Contact Using Contact Id",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/get/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"get",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid ContactId - Load or Get Contact By ContactId Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Operation",
+										"value": "Get Contact Using Contact Id",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/get/mike",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"get",
+										"mike"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Search Contacts",
+			"item": [
+				{
+					"name": "Positive Scenarios",
+					"item": [
+						{
+							"name": "Search All Contacts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/contacts/search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search Contacts By Name",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-user-operation",
+										"value": "Search Contacts By Name",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/searchByName/Jenifer Christina?operationName=\"SearchByName\"",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"searchByName",
+										"Jenifer Christina"
+									],
+									"query": [
+										{
+											"key": "operationName",
+											"value": "\"SearchByName\""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Scenarios",
+					"item": [
+						{
+							"name": "Contact Not Found - Search Contacts By Name",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-user-operation",
+										"value": "Search Contacts By Name",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/searchByName/Priyanka Jeffin?operationName=\"SearchByName\"",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"searchByName",
+										"Priyanka Jeffin"
+									],
+									"query": [
+										{
+											"key": "operationName",
+											"value": "\"SearchByName\""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Update Contact",
+			"item": [
+				{
+					"name": "Positive Scenarios",
+					"item": [
+						{
+							"name": "Update an existing Contact by ContactId",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"contactId\": 5,\r\n        \"fullName\": \"Edwin Selvam\",\r\n        \"emailAddress\": \"edwin-inba-raj.p@gmail.com\",\r\n        \"phoneNumber\": \"+919094523575\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Scenarios",
+					"item": [
+						{
+							"name": "Contact Not Found - Update Contact",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"contactId\": 15,\r\n        \"fullName\": \"Edwin Selvam\",\r\n        \"emailAddress\": \"edwin-inba-raj.p@gmail.com\",\r\n        \"phoneNumber\": \"+919094523575\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Delete Contact",
+			"item": [
+				{
+					"name": "Positive Scenarios",
+					"item": [
+						{
+							"name": "Delete a Contact By ContactId",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Operation",
+										"value": "Get Contact Using Contact Id",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/delete/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"delete",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Scenarios",
+					"item": [
+						{
+							"name": "Contact Not Found - Delete Contact",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Operation",
+										"value": "Get Contact Using Contact Id",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/delete/17",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"delete",
+										"17"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid ContactId - Delete Contact Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Operation",
+										"value": "Get Contact Using Contact Id",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/contacts/delete/mike",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"delete",
+										"mike"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

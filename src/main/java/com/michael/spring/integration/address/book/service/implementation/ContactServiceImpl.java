@@ -1,6 +1,7 @@
 package com.michael.spring.integration.address.book.service.implementation;
 
 import com.michael.spring.integration.address.book.entity.Contact;
+import com.michael.spring.integration.address.book.exception.ContactAlreadyExistsException;
 import com.michael.spring.integration.address.book.exception.ContactNotFoundException;
 import com.michael.spring.integration.address.book.exception.InvalidContactIdException;
 import com.michael.spring.integration.address.book.mapper.ContactMapper;
@@ -10,6 +11,8 @@ import com.michael.spring.integration.address.book.repository.ContactRepository;
 import com.michael.spring.integration.address.book.service.ContactService;
 import com.michael.spring.integration.address.book.util.ContactsUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -44,6 +47,20 @@ public class ContactServiceImpl implements ContactService {
     public Message createContact(ContactDTO contactDTO) {
         log.info(CONTACT_DETAILS_RECEIVED, contactDTO);
         Contact contactToBeCreated = ContactMapper.mapToContact(contactDTO);
+
+        // Check for the existence
+        if(contactDTO.getContactId()!=null &&
+                contactRepository.findById(contactDTO.getContactId()).isPresent()){
+            String detailMessage = new StringBuilder(CONTACT_ALREADY_EXISTING_FOR_GIVEN_ID).append(contactDTO.getContactId()).toString();
+            throwContactAlreadyExistsException(detailMessage);
+        } else if(contactDTO.getFullName()!=null) {
+            List<Contact> contactList = contactRepository.findByFullName(contactDTO.getFullName());
+            if(ObjectUtils.isNotEmpty(contactList)){
+                String detailMessage = new StringBuilder(CONTACT_ALREADY_EXISTING_FOR_GIVEN_NAME).append(contactDTO.getFullName()).toString();
+                throwContactAlreadyExistsException(detailMessage);
+            }
+        }
+        // Create the new contact
         Contact contactCreated = contactRepository.save(contactToBeCreated);
         Map<String,Object> customHeaders = new HashMap<>();
         customHeaders.put(HttpHeaders.STATUS_CODE, HttpStatus.CREATED);
@@ -54,7 +71,7 @@ public class ContactServiceImpl implements ContactService {
     @ServiceActivator(inputChannel = UPDATE_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
     public ContactDTO updateContact(ContactDTO contactDTO) {
         Long contactId = contactDTO.getContactId();
-        Optional<Contact> contactDb = this.contactRepository.findById(contactId);
+        Optional<Contact> contactDb = contactRepository.findById(contactId);
         if (contactDb.isPresent()) {
             Contact contactUpdate = contactDb.get();
             contactUpdate.setFullName(contactDTO.getFullName());
@@ -63,7 +80,7 @@ public class ContactServiceImpl implements ContactService {
             contactRepository.save(contactUpdate);
             return ContactMapper.mapToContactDTO(contactUpdate);
         } else {
-            String detailMessage = CONTACT_NOT_FOUND + contactId;
+            String detailMessage = new StringBuilder(CONTACT_NOT_FOUND).append(contactId).toString();
             throw new ContactNotFoundException(RESOURCE_PUT, CONTACT_ID,detailMessage);
         }
     }
@@ -87,7 +104,7 @@ public class ContactServiceImpl implements ContactService {
         if (contactDb.isPresent()) {
             return ContactMapper.mapToContactDTO(contactDb.get());
         }else {
-            String detailMessage = CONTACT_NOT_FOUND + contactId;
+            String detailMessage = new StringBuilder(CONTACT_NOT_FOUND).append(contactId).toString();
             throw new ContactNotFoundException(RESOURCE_GET, CONTACT_ID,detailMessage);
         }
 
@@ -103,6 +120,10 @@ public class ContactServiceImpl implements ContactService {
         log.info(CONTACT_NAME_RECEIVED_VIA_CUSTOM_HEADER, operationNameByRequestHeader);
         List<Contact> contactList = contactRepository.findByFullName(contactName);
         // Add the code if there is no search result found for the given search criteria
+        if(ObjectUtils.isEmpty(contactList)){
+            String detailMessage = CONTACT_NOT_FOUND_FOR_THE_GIVEN_NAME + contactName;
+            throw new ContactNotFoundException(RESOURCE_GET, FULL_NAME,detailMessage);
+        }
         return ContactMapper.mapToContactDTOs(contactList);
     }
 
@@ -117,14 +138,14 @@ public class ContactServiceImpl implements ContactService {
             String messageForResponse = String.format(CONTACT_DELETE_OPERATION_MSG,contactId);
             return new ResponseDTO(messageForResponse);
         } else {
-            String detailMessage = CONTACT_NOT_FOUND + contactId;
+            String detailMessage = new StringBuilder(CONTACT_NOT_FOUND).append(contactId).toString();
             throw new ContactNotFoundException(RESOURCE_DELETE, CONTACT_ID, detailMessage);
         }
     }
 
     private Long validateAndExtractContactId(Message message){
         try {
-            if(message.getPayload()==null || (message.getPayload().toString()==null || message.getPayload().toString().isBlank())){
+            if(message.getPayload() == null || (StringUtils.isBlank(message.getPayload().toString()))){
                 log.error(CONTACT_ID_CANT_BE_NULL_BLANK);
                 throw new InvalidContactIdException(CONTACT_ID , CONTACT_ID_CANT_BE_NULL_BLANK);
             }
@@ -134,4 +155,8 @@ public class ContactServiceImpl implements ContactService {
             throw new InvalidContactIdException(CONTACT_ID , CONTACT_ID_IS_INVALID);
         }
     }
+    private void throwContactAlreadyExistsException(String detailMessage ){
+        throw new ContactAlreadyExistsException(RESOURCE_POST,CONTACT_ID,detailMessage);
+    }
+
 }

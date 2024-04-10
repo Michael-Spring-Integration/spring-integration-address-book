@@ -1,5 +1,6 @@
 package com.michael.spring.integration.address.book.handler;
 
+import com.michael.spring.integration.address.book.exception.ContactAlreadyExistsException;
 import com.michael.spring.integration.address.book.exception.ContactNotFoundException;
 import com.michael.spring.integration.address.book.exception.InvalidContactDetailsException;
 import com.michael.spring.integration.address.book.exception.InvalidContactIdException;
@@ -37,6 +38,8 @@ public class AddressBookGlobalErrorHandler {
             httpStatus = HttpStatus.BAD_REQUEST;
         }else if(message.getPayload().getCause() instanceof InvalidContactDetailsException){
             httpStatus = HttpStatus.BAD_REQUEST;
+        }else if(message.getPayload().getCause() instanceof ContactAlreadyExistsException){
+            httpStatus = HttpStatus.CONFLICT;
         }else if(message.getPayload().getCause() instanceof Exception){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
