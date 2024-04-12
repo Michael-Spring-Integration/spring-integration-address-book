@@ -1,6 +1,5 @@
 package com.michael.spring.integration.address.book.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
@@ -17,15 +16,10 @@ import java.util.Map;
 
 @Configuration
 public class SearchContactByNameConfiguration {
-    @Autowired
-    MessageChannel httpRequestChannel;
-    @Autowired
-    MessageChannel httpReplyChannel;
-        @Autowired
-    MessageChannel httpErrorChannel;
-
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForSearchContactsByName() {
+    public HttpRequestHandlingMessagingGateway httpGatewayForSearchContactsByName(MessageChannel httpRequestChannel,
+                                                                                  MessageChannel httpReplyChannel,
+                                                                                  MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
         gateway.setRequestMapping(createRequestMappingForSearchContactsByName());
         gateway.setRequestChannel(httpRequestChannel);

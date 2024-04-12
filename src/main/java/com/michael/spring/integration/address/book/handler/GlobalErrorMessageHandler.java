@@ -11,6 +11,7 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.http.HttpHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
+//import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,10 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class AddressBookGlobalErrorHandler {
+public class GlobalErrorMessageHandler {
     @ServiceActivator(inputChannel = "httpErrorChannel", outputChannel = "httpReplyChannel")
-    public Message<String> handleError(Message<MessageHandlingException> message) {
+    // public Message<String> handleErrorMessage(ErrorMessage message) {
+    public Message<String> handleErrorMessage(Message<MessageHandlingException> message) {
         Map<String,Object> customHeaders = new HashMap<>();
         String errorMessage =  message.getPayload().getCause().getMessage();
         log.error("The exception thrown while processing message : {} ",errorMessage);
@@ -30,6 +32,7 @@ public class AddressBookGlobalErrorHandler {
         return MessageBuilder.createMessage(errorMessage, ContactsUtil.createMessageHeaders(customHeaders));
     }
 
+    //private HttpStatus getHttpStatus(ErrorMessage message) {
     private HttpStatus getHttpStatus(Message<MessageHandlingException> message) {
         HttpStatus httpStatus = null;
         if (message.getPayload().getCause() instanceof ContactNotFoundException) {
@@ -37,6 +40,7 @@ public class AddressBookGlobalErrorHandler {
         }else if(message.getPayload().getCause() instanceof InvalidContactIdException){
             httpStatus = HttpStatus.BAD_REQUEST;
         }else if(message.getPayload().getCause() instanceof InvalidContactDetailsException){
+            log.error("The exception thrown for invalid contact details : {} " ,message.getPayload().getCause() );
             httpStatus = HttpStatus.BAD_REQUEST;
         }else if(message.getPayload().getCause() instanceof ContactAlreadyExistsException){
             httpStatus = HttpStatus.CONFLICT;

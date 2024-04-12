@@ -93,7 +93,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = GET_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
-    public ContactDTO getContactById(Message message) {
+    public ContactDTO getContactById(Message<String> message) {
         if (message != null && message.getHeaders() != null) {
             log.info(HEADERS_OF_MESSAGE);
             message.getHeaders().forEach((key, value) -> log.info("{}: {}", key, value));
@@ -129,7 +129,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = DELETE_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
-    public ResponseDTO deleteContact(Message message) {
+    public ResponseDTO deleteContact(Message<String> message) {
         Long contactId = validateAndExtractContactId(message);
         log.info(CONTACT_ID_RECEIVED_IN_DELETE_CONTACT_BY_ID, contactId);
         Optional<Contact> contactDb = contactRepository.findById(contactId);
@@ -143,13 +143,13 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
-    private Long validateAndExtractContactId(Message message){
+    private Long validateAndExtractContactId(Message<String> message){
         try {
-            if(message.getPayload() == null || (StringUtils.isBlank(message.getPayload().toString()))){
+            if(message.getPayload() == null || (StringUtils.isBlank(message.getPayload()))){
                 log.error(CONTACT_ID_CANT_BE_NULL_BLANK);
                 throw new InvalidContactIdException(CONTACT_ID , CONTACT_ID_CANT_BE_NULL_BLANK);
             }
-            return Long.parseLong(message.getPayload().toString());
+            return Long.parseLong(message.getPayload());
         }catch (NumberFormatException numberFormatException){
             log.error(CONTACT_ID_IS_INVALID + EXCEPTION_DETAILS , numberFormatException);
             throw new InvalidContactIdException(CONTACT_ID , CONTACT_ID_IS_INVALID);

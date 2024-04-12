@@ -1,6 +1,5 @@
 package com.michael.spring.integration.address.book.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
@@ -13,15 +12,12 @@ import org.springframework.integration.http.inbound.RequestMapping;
 import org.springframework.messaging.MessageChannel;
 
 @Configuration
-public class GetOrDeleteContactConfiguration {
-    @Autowired
-    MessageChannel httpRequestChannel;
-    @Autowired
-    MessageChannel httpReplyChannel;
-    @Autowired
-    MessageChannel httpErrorChannel;
+public class GetAndDeleteContactConfiguration {
+
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForGetOrDeleteContact() {
+    public HttpRequestHandlingMessagingGateway httpGatewayForGetOrDeleteContact(MessageChannel httpRequestChannel,
+                                                                                MessageChannel httpReplyChannel,
+                                                                                MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
         gateway.setRequestMapping(createRequestMappingForGetOrDeleteContact());
         gateway.setRequestChannel(httpRequestChannel);

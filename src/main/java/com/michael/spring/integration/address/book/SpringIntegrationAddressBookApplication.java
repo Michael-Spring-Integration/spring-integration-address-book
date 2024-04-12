@@ -1,6 +1,6 @@
 package com.michael.spring.integration.address.book;
 
-import com.michael.spring.integration.address.book.config.SpringIntegrationAddressBookConfiguration;
+import com.michael.spring.integration.address.book.config.AddressBookConfiguration;
 import com.michael.spring.integration.address.book.model.response.ResponseDTO;
 import com.michael.spring.integration.address.book.model.request.ContactDTO;
 import com.michael.spring.integration.address.book.service.ContactService;
@@ -16,7 +16,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import java.util.List;
 
 @SpringBootApplication
-@Import(SpringIntegrationAddressBookConfiguration.class)
+@Import(AddressBookConfiguration.class)
 @Slf4j
 public class SpringIntegrationAddressBookApplication {
 
@@ -139,7 +139,7 @@ public class SpringIntegrationAddressBookApplication {
 			log.info("\n");
 
 			// Get contact by ID
-			Message<Long> message = MessageBuilder.withPayload(1L).build();
+			Message<String> message = MessageBuilder.withPayload("1").build();
 			ContactDTO contactDTOFetched = contactService.getContactById(message);
 			log.info("Contact found with findById(1L):");
 			log.info("--------------------------------");
@@ -168,7 +168,7 @@ public class SpringIntegrationAddressBookApplication {
 			});
 
 			// Delete a contact
-			Message<Long> messageForDelete = MessageBuilder.withPayload(4L).build();
+			Message<String> messageForDelete = MessageBuilder.withPayload("4").build();
 			ResponseDTO resultOfDeleteOperation = contactService.deleteContact(messageForDelete);
 			log.info("Contact deleted where ID = 2L");
 			log.info("The result of Delete operation is {} " , resultOfDeleteOperation);

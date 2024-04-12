@@ -5,30 +5,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.http.HttpMethod;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.http.HttpHeaders;
-import org.springframework.integration.http.inbound.HttpRequestHandlingMessagingGateway;
-import org.springframework.integration.http.inbound.RequestMapping;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Configuration
 @EnableIntegration
-@Import({GetOrDeleteContactConfiguration.class,
+@Import({GetAndDeleteContactConfiguration.class,
         SearchContactByNameConfiguration.class,
-        AddOrUpdateOrSearchAllContactsConfiguration.class})
+        AddAndUpdateAndSearchAllContactsConfiguration.class})
 @Slf4j
-public class SpringIntegrationAddressBookConfiguration {
+public class AddressBookConfiguration {
 
     @Bean
     public MessageChannel httpRequestChannel() {

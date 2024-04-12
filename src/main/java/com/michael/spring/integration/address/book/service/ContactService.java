@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface ContactService {
 
-    Message createContact(ContactDTO contactDTO);
+    Message<ContactDTO> createContact(ContactDTO contactDTO);
     ContactDTO updateContact(ContactDTO contactDTO);
     List<ContactDTO> getAllContacts();
-    ContactDTO getContactById(Message message);
+    ContactDTO getContactById(Message<String> message);
     List<ContactDTO> searchContactsByName(String contactName, String operationNameByRequestParam, String operationNameByRequestHeader);
-    ResponseDTO deleteContact(Message message);
+    ResponseDTO deleteContact(Message<String> message);
 }
