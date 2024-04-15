@@ -17,8 +17,8 @@ import org.springframework.messaging.MessageChannel;
 @Configuration
 @EnableIntegration
 @Import({GetAndDeleteContactConfiguration.class,
-        SearchContactByNameConfiguration.class,
-        AddAndUpdateAndSearchAllContactsConfiguration.class})
+        SearchContactsByNameConfiguration.class,
+        AddAndUpdateContactConfiguration.class})
 @Slf4j
 public class AddressBookConfiguration {
 

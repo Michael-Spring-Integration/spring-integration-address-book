@@ -102,6 +102,151 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Email Adress is Empty : Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"\",\"phoneNumber\":\"+919094523574\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Email Adress : Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Mike\",\"emailAddress\":\"michaelraj.p@gmail.com.\",\"phoneNumber\":\"+919094523573\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Phone Number is Empty : Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Phone Number : Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"+91652\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Full Name is Empty : Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"+919094523574\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}

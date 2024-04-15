@@ -1,5 +1,6 @@
 package com.michael.spring.integration.address.book.config;
 
+import com.michael.spring.integration.address.book.model.request.ContactDTO;
 import com.michael.spring.integration.address.book.validator.PayloadValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,30 +15,33 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.validation.Validator;
 
 @Configuration
-public class AddAndUpdateAndSearchAllContactsConfiguration {
+public class AddAndUpdateContactConfiguration {
 
- /*   @Bean
+    /*@Bean
     public ValidationAwareRequestPayloadMessageConverter validationAwareRequestPayloadMessageConverter() {
         return new ValidationAwareRequestPayloadMessageConverter();
     }*/
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForAddOrUpdateOrSearchAllContacts(MessageChannel httpRequestChannel,
-                                                                                            MessageChannel httpReplyChannel,
-                                                                                            MessageChannel httpErrorChannel) {
+    public HttpRequestHandlingMessagingGateway httpGatewayForAddOrUpdateContact(MessageChannel httpRequestChannel,
+                                                                                MessageChannel httpReplyChannel,
+                                                                                MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
-        gateway.setRequestMapping(createRequestMappingForAddOrUpdateOrSearchAllContacts());
+        gateway.setRequestMapping(createRequestMappingForAddOrUpdateContact());
         gateway.setRequestChannel(httpRequestChannel);
         gateway.setReplyChannel(httpReplyChannel);
         gateway.setErrorChannel(httpErrorChannel);
-        gateway.setPayloadExpression(createPayloadExpressionForAddAndUpdateContact());
+        //gateway.setPayloadExpression(createPayloadExpressionForAddAndUpdateContact());
         //gateway.setMessageConverters(validationAwareRequestPayloadMessageConverter());  // 'ValidationAwareRequestPayloadMessageConverter' will be only available from 'spring-web' 6.2.3 onwards
-       // gateway.setValidator(validator());
+        gateway.setRequestPayloadTypeClass(ContactDTO.class);
+        gateway.setValidator(validator());
+        gateway.setAutoStartup(true);
         return gateway;
     }
-    private RequestMapping createRequestMappingForAddOrUpdateOrSearchAllContacts() {
+
+    private RequestMapping createRequestMappingForAddOrUpdateContact() {
         RequestMapping requestMapping = new RequestMapping();
-        requestMapping.setMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT); // Add more methods as needed
-        requestMapping.setPathPatterns("/contacts/add", "/contacts/update","contacts/search","contacts/search-by-name/*"); // Add more paths as needed
+        requestMapping.setMethods(HttpMethod.POST, HttpMethod.PUT); // Add more methods as needed
+        requestMapping.setPathPatterns("/contacts/add", "/contacts/update"); // Add more paths as needed
         return requestMapping;
     }
 
@@ -48,10 +52,6 @@ public class AddAndUpdateAndSearchAllContactsConfiguration {
     @Bean
     public Validator validator() {
         return new PayloadValidator();
-    }
-    @Bean
-    public MessageChannel searchAllContactsChannel() {
-        return new DirectChannel();
     }
     @Bean
     public MessageChannel addContactChannel() {
