@@ -13,3 +13,9 @@ for the following operations
 4. Delete the existing Contact using 'contactId'
 5. Search all the existing Contacts
 6. Search the existing Contact using the 'fullName'
+
+
+# Set the following environment variable 
+# to boostrap the application in the local development environment 
+
+spring.profiles.active=local

@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -26,7 +27,8 @@ public class SpringIntegrationAddressBookApplication {
 
 	// Spring runs CommandLineRunner bean when Spring Boot App starts
 	/*@Bean
-	public CommandLineRunner demo(ContactRepository contactRepository) {
+	@Profile("local-data")
+	public CommandLineRunner dataBeanForDemo(ContactRepository contactRepository) {
 		return (args) -> {
 
 			Contact c1 = new Contact();
@@ -99,7 +101,8 @@ public class SpringIntegrationAddressBookApplication {
 	}*/
 
 	@Bean
-	public CommandLineRunner demo(ContactService contactService) {
+	@Profile("local")
+	public CommandLineRunner dataBeanForDemo(ContactService contactService) {
 		return args -> {
 
 			final String ALFRED_MICHAEL = "Alfred Michael";

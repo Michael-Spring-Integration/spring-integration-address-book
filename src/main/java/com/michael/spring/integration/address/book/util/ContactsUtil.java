@@ -8,17 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContactsUtil {
-
-    private ContactsUtil(){
-
-    }
     public static MessageHeaders createMessageHeaders(Map<String,Object> customHeaders){
         return new MessageHeaders(customHeaders);
-    }
-
-    public static Map<String,Object> createHeaderMap(HttpStatus httpStatus){
-        Map<String,Object> customHeadersMap = new HashMap<>();
-        customHeadersMap.put(HttpHeaders.STATUS_CODE, httpStatus);
-        return new HashMap<>();
     }
 }

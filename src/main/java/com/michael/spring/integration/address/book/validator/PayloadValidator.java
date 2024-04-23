@@ -28,7 +28,7 @@ public class PayloadValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ContactDTO  contactDTO = (ContactDTO ) target;
+        ContactDTO  contactDTO = (ContactDTO) target;
         String emailAddress = contactDTO.getEmailAddress();
         String phoneNumber = contactDTO.getPhoneNumber();
 

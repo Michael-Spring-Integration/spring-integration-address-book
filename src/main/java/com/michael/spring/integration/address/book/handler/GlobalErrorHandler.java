@@ -30,7 +30,7 @@ public class GlobalErrorHandler {
         if(message.getPayload().getCause() instanceof InvalidContactDetailsException invalidContactDetailsException) {
             List<ObjectError> objectErrors = invalidContactDetailsException.getObjectErrors();
             log.error("The exception thrown while validating the message : {} ", objectErrors);
-            errorMessage = objectErrors.toString();
+            errorMessage = objectErrors.get(0).getDefaultMessage();
         }else if (message.getPayload() instanceof MessageHandlingException){
             errorMessage = message.getPayload().getCause().getMessage();
             log.error("The exception thrown while processing message : {} ", errorMessage);
