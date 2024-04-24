@@ -31,7 +31,7 @@ public class GlobalErrorHandler {
                 message.getPayload().getCause() instanceof InvalidContactDetailsException invalidContactDetailsException) {
             List<ObjectError> objectErrors = invalidContactDetailsException.getObjectErrors();
             log.error("The exception thrown while validating the message : {} ", objectErrors);
-            errorMessage = objectErrors.get(0).getDefaultMessage();
+            errorMessage = constructErrorMessage(objectErrors);
         }else if (message.getPayload() instanceof MessageHandlingException){
             errorMessage = message.getPayload().getCause().getMessage();
             log.error("The exception thrown while processing message : {} ", errorMessage);
@@ -41,6 +41,15 @@ public class GlobalErrorHandler {
         HttpStatus httpStatus = getHttpStatus(message);
         customHeaders.put(HttpHeaders.STATUS_CODE, httpStatus);
         return MessageBuilder.createMessage(errorMessage, ContactsUtil.createMessageHeaders(customHeaders));
+    }
+
+    private String constructErrorMessage(List<ObjectError> objectErrors){
+        String errorMessage = null;
+        StringBuffer errorMessageBuilder = new StringBuffer();
+        for(int i=0; i<objectErrors.size();i++) {
+            errorMessageBuilder.append(objectErrors.get(i).getDefaultMessage()).append("\n");
+        }
+        return errorMessageBuilder.toString();
     }
 
     private HttpStatus getHttpStatus(ErrorMessage message) {
