@@ -12,7 +12,123 @@
 					"name": "Positive Scenarios",
 					"item": [
 						{
-							"name": "Add a new Contact",
+							"name": "1 - Add a new Contact - Michael Philomin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"+919094523573\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Add a new Contact - Jenifer Christina",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Jenifer Christina\",\"emailAddress\":\"jenichri.19.p@gmail.com\",\"phoneNumber\":\"+919894067712\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Add a new Contact - Alfred Michael",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Alfred Michael\",\"emailAddress\":\"selvam181084@gmail.com\",\"phoneNumber\":\"+919488251189\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Add a new Contact - Priyanka Jeffin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"Priyanka Jeffin\",\"emailAddress\":\"priyanka.jeffin@gmail.com\",\"phoneNumber\":\"+919080053794\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - Add a new Contact - Edwin Selvam",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -427,7 +543,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/contacts/searchByName/Priyanka Jeffin?operationName=\"SearchByName\"",
+									"raw": "http://localhost:8080/contacts/searchByName/Priyanka Jeffin NS?operationName=\"SearchByName\"",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -436,7 +552,7 @@
 									"path": [
 										"contacts",
 										"searchByName",
-										"Priyanka Jeffin"
+										"Priyanka Jeffin NS"
 									],
 									"query": [
 										{

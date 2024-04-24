@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ContactServiceTest {
+ class ContactServiceTest {
 
     @InjectMocks
     ContactServiceImpl contactServiceImpl;
@@ -39,12 +39,12 @@ public class ContactServiceTest {
     ContactRepository contactRepository;
 
     @BeforeEach
-    public void init() {
+     void init() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testCreateContact(){
+     void testCreateContact(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -83,7 +83,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testCreateContactForContactIdAlreadyExistingScenario(){
+     void testCreateContactForContactIdAlreadyExistingScenario(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -117,7 +117,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testCreateContactForContactNameAlreadyExistingScenario(){
+     void testCreateContactForContactNameAlreadyExistingScenario(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -149,7 +149,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testUpdateContact(){
+     void testUpdateContact(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -199,7 +199,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testContactNotFoundForUpdate(){
+     void testContactNotFoundForUpdate(){
 
         Long contactId =  15L;
         String fullName = "Michael Philomin";
@@ -227,7 +227,7 @@ public class ContactServiceTest {
 
 
     @Test
-    public void testFindAllContacts(){
+     void testFindAllContacts(){
 
         List<Contact> list = new ArrayList<Contact>();
 
@@ -270,7 +270,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testGetContactById(){
+     void testGetContactById(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -306,7 +306,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testGetContactByIdForNotFoundScenario(){
+     void testGetContactByIdForNotFoundScenario(){
         Long contactId =  18L;
         when(contactRepository.findById(contactId)).thenReturn(Optional.ofNullable(null));
         Message<String> message = MessageBuilder.withPayload("18").setHeader("x-user-operation","Search Contacts By Name").build();
@@ -320,7 +320,7 @@ public class ContactServiceTest {
         assertNotNull(contactNotFoundException.getMessage());
     }
     @Test
-    public void testSearchContactsByName(){
+     void testSearchContactsByName(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -353,7 +353,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testSearchContactsByNameForNotFoundScenario(){
+     void testSearchContactsByNameForNotFoundScenario(){
         String fullName = "Michael Philomin";
         when(contactRepository.findByFullName(fullName)).thenReturn(null);
 
@@ -369,7 +369,7 @@ public class ContactServiceTest {
 
 
     @Test
-    public void testDeleteContact(){
+     void testDeleteContact(){
 
         Long contactId =  1L;
         String fullName = "Michael Philomin";
@@ -393,7 +393,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testDeleteContactForNotFoundScenario(){
+     void testDeleteContactForNotFoundScenario(){
         Long contactId =  1L;
         when(contactRepository.findById(contactId)).thenReturn(Optional.ofNullable(null));
 
@@ -408,7 +408,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testDeleteContactForInvalidContactId(){
+     void testDeleteContactForInvalidContactId(){
         Message<String> message = MessageBuilder.withPayload("").build();
         InvalidContactIdException invalidContactIdException = Assertions.assertThrows(InvalidContactIdException.class,()->{
             contactServiceImpl.deleteContact(message);
@@ -419,7 +419,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void testDeleteContactForNumberFormatException(){
+     void testDeleteContactForNumberFormatException(){
         Message<String> message = MessageBuilder.withPayload("Michael").build();
         InvalidContactIdException invalidContactIdException = Assertions.assertThrows(InvalidContactIdException.class,()->{
             contactServiceImpl.deleteContact(message);

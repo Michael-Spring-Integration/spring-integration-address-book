@@ -8,10 +8,10 @@ import org.springframework.validation.ObjectError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvalidContactDetailsExceptionTest {
+ class InvalidContactDetailsExceptionTest {
 
     @Test
-    public void testInvalidContactDetailsException(){
+     void testInvalidContactDetailsException(){
 
         String objectName = "contactDTO.emailAddress.invalid";
         String defaultMessage = "Invalid email address";

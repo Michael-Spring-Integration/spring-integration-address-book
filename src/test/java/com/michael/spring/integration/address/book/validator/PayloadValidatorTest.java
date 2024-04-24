@@ -6,17 +6,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-public class PayloadValidatorTest {
+ class PayloadValidatorTest {
 
     @Test
-    public void testSupportingClassType(){
+     void testSupportingClassType(){
         PayloadValidator payloadValidator = new PayloadValidator();
         boolean result = payloadValidator.supports(ContactDTO.class);
-        Assertions.assertNotNull(result);
         Assertions.assertTrue(result);
     }
     @Test
-    public void testValidatePayload(){
+     void testValidatePayload(){
         String fullName = "";
         String emailAddress = "michaelraj.p@gmail.com.";
         String phoneNumber = "+91652";

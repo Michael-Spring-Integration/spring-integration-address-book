@@ -4,9 +4,6 @@ import com.michael.spring.integration.address.book.model.request.ContactDTO;
 import com.michael.spring.integration.address.book.validator.PayloadValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.http.HttpMethod;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.http.inbound.HttpRequestHandlingMessagingGateway;
@@ -45,10 +42,10 @@ public class AddAndUpdateContactConfiguration {
         return requestMapping;
     }
 
-    private Expression createPayloadExpressionForAddAndUpdateContact(){
+    /*private Expression createPayloadExpressionForAddAndUpdateContact(){
         ExpressionParser parser = new SpelExpressionParser();
         return parser.parseExpression("#requestPayload");
-    }
+    }*/
     @Bean
     public Validator validator() {
         return new PayloadValidator();

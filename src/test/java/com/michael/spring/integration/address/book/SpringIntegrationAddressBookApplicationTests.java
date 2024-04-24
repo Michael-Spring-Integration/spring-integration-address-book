@@ -16,10 +16,12 @@ class SpringIntegrationAddressBookApplicationTests {
 	@Autowired
 	ContactRepository contactRepository;
 
+
 	@Test
 	void contextLoads() {
-		Assertions.assertThat(contactRepository).isNotEqualTo(null);
-		Assertions.assertThat(contactService).isNotEqualTo(null);
+		Assertions.assertThat(contactRepository).isNotNull();
+		Assertions.assertThat(contactService).isNotNull();
+		SpringIntegrationAddressBookApplication.main(new String[]{});
 	}
 
 }

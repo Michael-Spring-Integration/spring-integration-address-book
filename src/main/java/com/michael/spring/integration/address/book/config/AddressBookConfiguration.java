@@ -40,30 +40,26 @@ public class AddressBookConfiguration {
     public IntegrationFlow integrationFlow() {
         return IntegrationFlow.from("httpRequestChannel")
                 .route(Message.class, requestMessage -> {
-                    log.info("The requestMessage {} " , requestMessage);
-                    log.info("The values of all (both standard and custom) http headers from the message : ");
-                    requestMessage.getHeaders().forEach((key, value) -> log.info("{}: {}", key, value));
+
+                    log.debug("The requestMessage {} " , requestMessage);
+
+                    //requestMessage.getHeaders().forEach((key, value) -> log.info("{}: {}", key, value));
 
                     String method = requestMessage.getHeaders().get(HttpHeaders.REQUEST_METHOD, String.class);
-                    log.info("The Requested HTTP Method  : {} " , method);
+                    log.debug("The Requested HTTP Method  : {} " , method);
 
                     String path = requestMessage.getHeaders().get(HttpHeaders.REQUEST_URL, String.class);
-                    log.info("The Requested HTTP Path  : {} " , path);
+                    log.debug("The Requested HTTP Path  : {} " , path);
 
                     if (HttpMethod.POST.toString().equals(method) && path.contains("/contacts/add")) {
-                        log.info("The method call in ContactServiceImpl -> createContact() ");
                         return "addContactChannel";
                     } else if (HttpMethod.GET.toString().equals(method) && path.contains("/contacts/get/")) {
-                        log.info("The method call in ContactServiceImpl -> getContactById() ");
                         return "getContactChannel";
                     }else if (HttpMethod.GET.toString().equals(method) && path.contains("/contacts/searchByName")) {
-                        log.info("The method call in ContactServiceImpl -> searchContactsByName() ");
                         return "searchContactsByNameChannel"; // Handle other cases as needed
                     }else if (HttpMethod.GET.toString().equals(method) && path.contains("/contacts/search")) {
-                        log.info("The method call in ContactServiceImpl -> getAllContacts() ");
                         return "searchAllContactsChannel"; // Handle other cases as needed
                     } else if (HttpMethod.DELETE.toString().equals(method) && path.contains("/contacts/delete")) {
-                        log.info("The method call in ContactServiceImpl -> deleteContact() ");
                         return "deleteContactChannel";
                     } else {
                         return "updateContactChannel";

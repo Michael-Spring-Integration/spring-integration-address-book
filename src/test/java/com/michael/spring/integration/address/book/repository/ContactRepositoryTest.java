@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-public class ContactRepositoryTest {
+ class ContactRepositoryTest {
 
     // Alternative for EntityManager
     // Optional in this case, we can use bookRepository to do the same stuff
@@ -23,7 +23,7 @@ public class ContactRepositoryTest {
     @Autowired
     ContactRepository contactRepository;
     @Test
-    public void testFindByFullName(){
+     void testFindByFullName(){
 
         String fullName = "Michael Philomin";
         String emailId = "michaelraj.p@gmail.com";
