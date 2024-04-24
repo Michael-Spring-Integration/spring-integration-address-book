@@ -27,13 +27,16 @@ public class GlobalErrorHandler {
         Map<String,Object> customHeaders = new HashMap<>();
         customHeaders.put(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         String errorMessage = null;
-        if(message.getPayload().getCause() instanceof InvalidContactDetailsException invalidContactDetailsException) {
+        if(message.getPayload().getCause()!=null &&
+                message.getPayload().getCause() instanceof InvalidContactDetailsException invalidContactDetailsException) {
             List<ObjectError> objectErrors = invalidContactDetailsException.getObjectErrors();
             log.error("The exception thrown while validating the message : {} ", objectErrors);
             errorMessage = objectErrors.get(0).getDefaultMessage();
         }else if (message.getPayload() instanceof MessageHandlingException){
             errorMessage = message.getPayload().getCause().getMessage();
             log.error("The exception thrown while processing message : {} ", errorMessage);
+        } else {
+            errorMessage = "The system is unable to process the request due to technical issue. Please try after sometime";
         }
         HttpStatus httpStatus = getHttpStatus(message);
         customHeaders.put(HttpHeaders.STATUS_CODE, httpStatus);
@@ -42,7 +45,9 @@ public class GlobalErrorHandler {
 
     private HttpStatus getHttpStatus(ErrorMessage message) {
         HttpStatus httpStatus = null;
-        switch (message.getPayload().getCause().getClass().getSimpleName()) {
+
+        String className = message.getPayload().getCause()!=null? message.getPayload().getCause().getClass().getSimpleName() :"HttpServerErrorException";
+        switch (className) {
             case "ContactNotFoundException":
                 httpStatus = HttpStatus.NOT_FOUND;
                 break;
