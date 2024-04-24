@@ -18,10 +18,10 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GlobalErrorHandlerTest {
+ class GlobalErrorHandlerTest {
 
     @Test
-    public void testHandleErrorForInvalidContactDetailsException(){
+     void testHandleErrorForInvalidContactDetailsException(){
         GlobalErrorHandler globalErrorHandler = new GlobalErrorHandler();
 
         String objectName = "contactDTO.emailAddress.invalid";
@@ -49,14 +49,17 @@ public class GlobalErrorHandlerTest {
     }
 
     @Test
-    public void testHandleErrorForInvalidContactIdException(){
+     void testHandleErrorForInvalidContactIdException(){
         GlobalErrorHandler globalErrorHandler = new GlobalErrorHandler();
         InvalidContactIdException invalidContactIdException = Assertions.assertThrows(InvalidContactIdException.class,() -> {
             throw new InvalidContactIdException("contactId","ContactId is invalid");
         });
 
-        MessageHandlingException messageHandlingException = Assertions.assertThrows(MessageHandlingException.class,() -> {
-            throw new MessageHandlingException(MessageBuilder.withPayload("Invalid contact id").build(),invalidContactIdException);
+       Message<String> errorMEssage = MessageBuilder.withPayload("Invalid contact id").build();
+
+
+       MessageHandlingException messageHandlingException = Assertions.assertThrows(MessageHandlingException.class,() -> {
+            throw new MessageHandlingException(errorMEssage,invalidContactIdException);
         });
         ErrorMessage errorMessage = new ErrorMessage(messageHandlingException);
 
@@ -70,14 +73,16 @@ public class GlobalErrorHandlerTest {
     }
 
     @Test
-    public void testHandleErrorForContactNotFoundException(){
+     void testHandleErrorForContactNotFoundException(){
         GlobalErrorHandler globalErrorHandler = new GlobalErrorHandler();
         ContactNotFoundException contactNotFoundException = Assertions.assertThrows(ContactNotFoundException.class,() -> {
             throw new ContactNotFoundException("GET","contactId","The contact is not found for the given Contact ID :7");
         });
 
-        MessageHandlingException messageHandlingException = Assertions.assertThrows(MessageHandlingException.class,() -> {
-            throw new MessageHandlingException(MessageBuilder.withPayload("The contact is not found for the given Contact ID :7").build(),contactNotFoundException);
+       Message<String> errorMEssage = MessageBuilder.withPayload("The contact is not found for the given Contact ID :7").build();
+
+       MessageHandlingException messageHandlingException = Assertions.assertThrows(MessageHandlingException.class,() -> {
+            throw new MessageHandlingException(errorMEssage,contactNotFoundException);
         });
         ErrorMessage errorMessage = new ErrorMessage(messageHandlingException);
 
@@ -91,14 +96,15 @@ public class GlobalErrorHandlerTest {
     }
 
     @Test
-    public void testHandleErrorForContactAlreadyExistsException(){
+     void testHandleErrorForContactAlreadyExistsException(){
         GlobalErrorHandler globalErrorHandler = new GlobalErrorHandler();
         ContactAlreadyExistsException contactAlreadyExistsException = Assertions.assertThrows(ContactAlreadyExistsException.class,() -> {
             throw new ContactAlreadyExistsException("POST","contactId","The given contact is already existing for the given Contact ID :2");
         });
 
+        Message<String> errorMEssage = MessageBuilder.withPayload("The given contact is already existing for the given Contact ID :2").build();
         MessageHandlingException messageHandlingException = Assertions.assertThrows(MessageHandlingException.class,() -> {
-            throw new MessageHandlingException(MessageBuilder.withPayload("The given contact is already existing for the given Contact ID :2").build(),contactAlreadyExistsException);
+            throw new MessageHandlingException(errorMEssage,contactAlreadyExistsException);
         });
         ErrorMessage errorMessage = new ErrorMessage(messageHandlingException);
 
@@ -112,7 +118,7 @@ public class GlobalErrorHandlerTest {
     }
 
     @Test
-    public void testHandleErrorForInterServerErrorWithStatusCode500(){
+     void testHandleErrorForInterServerErrorWithStatusCode500(){
         GlobalErrorHandler globalErrorHandler = new GlobalErrorHandler();
         HttpServerErrorException httpServerErrorException = Assertions.assertThrows(HttpServerErrorException.class,() -> {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
