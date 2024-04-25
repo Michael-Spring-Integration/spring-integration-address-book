@@ -44,7 +44,6 @@ public class GlobalErrorHandler {
     }
 
     private String constructErrorMessage(List<ObjectError> objectErrors){
-        String errorMessage = null;
         StringBuffer errorMessageBuilder = new StringBuffer();
         for(int i=0; i<objectErrors.size();i++) {
             errorMessageBuilder.append(objectErrors.get(i).getDefaultMessage()).append("\n");
