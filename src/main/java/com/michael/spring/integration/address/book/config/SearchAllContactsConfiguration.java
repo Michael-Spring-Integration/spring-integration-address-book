@@ -14,7 +14,7 @@ import org.springframework.messaging.MessageChannel;
 public class SearchAllContactsConfiguration {
 
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForSearchAllContacts(MessageChannel httpRequestChannel,
+    public HttpRequestHandlingMessagingGateway gatewayForSearchAllContacts(MessageChannel httpRequestChannel,
                                                                                MessageChannel httpReplyChannel,
                                                                                MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);

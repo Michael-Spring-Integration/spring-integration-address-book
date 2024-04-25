@@ -14,12 +14,8 @@ import org.springframework.validation.Validator;
 @Configuration
 public class AddAndUpdateContactConfiguration {
 
-    /*@Bean
-    public ValidationAwareRequestPayloadMessageConverter validationAwareRequestPayloadMessageConverter() {
-        return new ValidationAwareRequestPayloadMessageConverter();
-    }*/
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForAddOrUpdateContact(MessageChannel httpRequestChannel,
+    public HttpRequestHandlingMessagingGateway gatewayForAddAndUpdateContact(MessageChannel httpRequestChannel,
                                                                                 MessageChannel httpReplyChannel,
                                                                                 MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
@@ -27,8 +23,6 @@ public class AddAndUpdateContactConfiguration {
         gateway.setRequestChannel(httpRequestChannel);
         gateway.setReplyChannel(httpReplyChannel);
         gateway.setErrorChannel(httpErrorChannel);
-        //gateway.setPayloadExpression(createPayloadExpressionForAddAndUpdateContact());
-        //gateway.setMessageConverters(validationAwareRequestPayloadMessageConverter());  // 'ValidationAwareRequestPayloadMessageConverter' will be only available from 'spring-web' 6.2.3 onwards
         gateway.setRequestPayloadTypeClass(ContactDTO.class);
         gateway.setValidator(validator());
         gateway.setAutoStartup(true);
@@ -42,10 +36,6 @@ public class AddAndUpdateContactConfiguration {
         return requestMapping;
     }
 
-    /*private Expression createPayloadExpressionForAddAndUpdateContact(){
-        ExpressionParser parser = new SpelExpressionParser();
-        return parser.parseExpression("#requestPayload");
-    }*/
     @Bean
     public Validator validator() {
         return new PayloadValidator();

@@ -226,7 +226,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"\",\"phoneNumber\":\"+919094523574\"}",
+									"raw": "{\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"\",\"phoneNumber\":\"+919094523574\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -255,7 +255,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"fullName\":\"Mike\",\"emailAddress\":\"michaelraj.p@gmail.com.\",\"phoneNumber\":\"+919094523573\"}",
+									"raw": "{\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com.\",\"phoneNumber\":\"+919094523573\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -284,7 +284,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"\"}",
+									"raw": "{\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -313,7 +313,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"fullName\":\"Edwin Selvam\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"+91652\"}",
+									"raw": "{\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"+91652\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -342,7 +342,36 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\"fullName\":\"\",\"emailAddress\":\"edwinraj.p@gmail.com\",\"phoneNumber\":\"+919094523574\"}",
+									"raw": "{\"fullName\":\"\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"+919094523574\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Full Name - Email - Phone Number : Add a new Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"fullName\":\"\",\"emailAddress\":\"michaelraj.p@gmail.com.\",\"phoneNumber\":\"+91909\"}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -505,7 +534,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/contacts/searchByName/Jenifer Christina?operationName=\"SearchByName\"",
+									"raw": "http://localhost:8080/contacts/searchByName/Edwin Selvam?operationName=\"SearchByName\"",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -514,7 +543,7 @@
 									"path": [
 										"contacts",
 										"searchByName",
-										"Jenifer Christina"
+										"Edwin Selvam"
 									],
 									"query": [
 										{
@@ -632,6 +661,180 @@
 									"path": [
 										"contacts",
 										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Email Adress : Update an existing Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"contactId\": 5,\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com.\",\"phoneNumber\":\"+919094523573\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Email Adress is Empty : Update an existing Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"contactId\": 5,\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"\",\"phoneNumber\":\"+919094523574\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Phone Number is Empty : Update an existing Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"contactId\": 5,\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Phone Number : Update an existing Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"contactId\": 5,\"fullName\":\"Michael Philomin Raj\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"+91652\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Full Name is Empty : Update an existing Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"contactId\": 5,\"fullName\":\"\",\"emailAddress\":\"michaelraj.p@gmail.com\",\"phoneNumber\":\"+919094523574\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Full Name - Email - Phone Number : Update an existing Contact",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"contactId\": 5,\"fullName\":\"\",\"emailAddress\":\"michaelraj.p@gmail.com.\",\"phoneNumber\":\"+91909\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/contacts/add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"contacts",
+										"add"
 									]
 								}
 							},

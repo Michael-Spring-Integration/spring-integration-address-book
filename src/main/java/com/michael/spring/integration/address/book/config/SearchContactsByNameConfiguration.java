@@ -17,7 +17,7 @@ import java.util.Map;
 @Configuration
 public class SearchContactsByNameConfiguration {
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForSearchContactsByName(MessageChannel httpRequestChannel,
+    public HttpRequestHandlingMessagingGateway gatewayForSearchContactsByName(MessageChannel httpRequestChannel,
                                                                                   MessageChannel httpReplyChannel,
                                                                                   MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);

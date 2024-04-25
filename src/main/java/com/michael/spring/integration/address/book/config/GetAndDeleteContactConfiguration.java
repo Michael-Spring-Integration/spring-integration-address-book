@@ -15,7 +15,7 @@ import org.springframework.messaging.MessageChannel;
 public class GetAndDeleteContactConfiguration {
 
     @Bean
-    public HttpRequestHandlingMessagingGateway httpGatewayForGetOrDeleteContact(MessageChannel httpRequestChannel,
+    public HttpRequestHandlingMessagingGateway gatewayForGetAndDeleteContact(MessageChannel httpRequestChannel,
                                                                                 MessageChannel httpReplyChannel,
                                                                                 MessageChannel httpErrorChannel) {
         HttpRequestHandlingMessagingGateway gateway = new HttpRequestHandlingMessagingGateway(true);
