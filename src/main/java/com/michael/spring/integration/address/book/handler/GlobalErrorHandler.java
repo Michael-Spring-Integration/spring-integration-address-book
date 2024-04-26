@@ -3,6 +3,7 @@ package com.michael.spring.integration.address.book.handler;
 import com.michael.spring.integration.address.book.exception.InvalidContactDetailsException;
 import com.michael.spring.integration.address.book.util.ContactsUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -35,7 +36,9 @@ public class GlobalErrorHandler {
         }else if (message.getPayload() instanceof MessageHandlingException){
             errorMessage = message.getPayload().getCause().getMessage();
             log.error("The exception thrown while processing message : {} ", errorMessage);
-        } else {
+        } else if(message.getPayload() instanceof DataAccessException ||
+                message.getPayload() instanceof RuntimeException){
+            log.error("The error occurred while processing the message : {} " , message.getPayload());
             errorMessage = "The system is unable to process the request due to technical issue. Please try after sometime";
         }
         HttpStatus httpStatus = getHttpStatus(message);
