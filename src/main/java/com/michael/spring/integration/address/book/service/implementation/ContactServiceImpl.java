@@ -22,6 +22,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import java.util.Optional;
 import static com.michael.spring.integration.address.book.constants.ContactsConstant.*;
 
 @Service
-@Transactional
+
 @Slf4j
 public class ContactServiceImpl implements ContactService {
     ContactRepository contactRepository;
@@ -44,6 +45,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = ADD_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
+    @Transactional
     public Message createContact(ContactDTO contactDTO) {
         log.info(CONTACT_DETAILS_RECEIVED, contactDTO);
         Contact contactToBeCreated = ContactMapper.mapToContact(contactDTO);
@@ -69,6 +71,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = UPDATE_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
+    @Transactional
     public ContactDTO updateContact(ContactDTO contactDTO) {
         Long contactId = contactDTO.getContactId();
         Optional<Contact> contactDb = contactRepository.findById(contactId);
@@ -87,12 +90,14 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = SEARCH_ALL_CONTACTS_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public List<ContactDTO> getAllContacts() {
         return ContactMapper.mapToContactDTOs(contactRepository.findAll());
     }
 
     @Override
     @ServiceActivator(inputChannel = GET_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
+    @Transactional(readOnly = true)
     public ContactDTO getContactById(Message<String> message) {
         if (message != null && message.getHeaders() != null) {
             log.info(HEADERS_OF_MESSAGE);
@@ -112,6 +117,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = SEARCH_CONTACTS_BY_NAME_CHANNEL , outputChannel = HTTP_REPLY_CHANNEL)
+    @Transactional(readOnly = true)
     public List<ContactDTO> searchContactsByName(@Payload String contactName,
                                                  @Header(OPERATION_NAME_IN_REQUEST_PARAMETER) String operationNameByRequestParam,
                                                  @Header(OPERATION_NAME_IN_CUSTOM_HEADER) String operationNameByRequestHeader) {
@@ -129,6 +135,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     @ServiceActivator(inputChannel = DELETE_CONTACT_CHANNEL, outputChannel = HTTP_REPLY_CHANNEL)
+    @Transactional
     public ResponseDTO deleteContact(Message<String> message) {
         Long contactId = validateAndExtractContactId(message);
         log.info(CONTACT_ID_RECEIVED_IN_DELETE_CONTACT_BY_ID, contactId);
