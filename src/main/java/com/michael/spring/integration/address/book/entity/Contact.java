@@ -12,7 +12,7 @@ import java.time.Instant;
 @Table (name = "Contacts")
 public class Contact {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactId;
 
     @Column(name = "name")
